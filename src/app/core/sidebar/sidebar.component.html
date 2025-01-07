@@ -1,0 +1,10 @@
+<nav class="side-nav">
+  <mat-list role="list">
+    <mat-list-item role="listitem" *ngFor="let item of navItems">
+      <a mat-button class="nav-btn" [routerLink]="item.path" routerLinkActive="active-link">
+        <mat-icon>{{item.icon}}</mat-icon>
+        {{ item.label }}
+    </a>
+    </mat-list-item>
+  </mat-list>
+</nav>

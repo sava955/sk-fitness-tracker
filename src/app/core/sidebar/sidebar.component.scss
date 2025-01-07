@@ -1,0 +1,16 @@
+.side-nav {
+    padding: 0;
+    height: 100%;
+    background-color: var(--dsVars-background-gray-color);
+
+    .nav-btn {
+        width: 100%;
+        display: flex;
+        justify-content: start;
+
+        &.active-link {
+            color: var(--dsVars-white);
+            background-color: var(--dsVars-primary-color);
+        }
+    }
+}
