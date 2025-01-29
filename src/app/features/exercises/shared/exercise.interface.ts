@@ -1,3 +1,12 @@
+export interface ExerciseGroup {
+  day: Date;
+  exercise: Exercise;
+  sets: number;
+  setDuration: number;
+  status: string;
+  caloriesBurned: number;
+}
+
 export interface Exercise {
   id: number;
   code: string;

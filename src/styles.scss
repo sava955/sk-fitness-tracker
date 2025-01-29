@@ -19,10 +19,10 @@
   --dsVars-primary-dark: #180f2a;
 
   --dsVars-background-light-color: #f4f6f5;
-  --dsVars-background-gray-color: #e9edec;
+  --dsVars-background-gray-color: #efefef;
   --dsVars-background-dark-color: #1b1b1b;
 
-  --dsVars-element-preselection: #f8af8a;
+  --dsVars-primary-light-color: #f8af8a;
   --dsVars-mandatory-element: #fde5d4;
 
   --dsVars-icon-inactive-color: #cbcbcb;
@@ -30,11 +30,6 @@
 
 $orange-palette: map.set(mat.$orange-palette, 40, var(--dsVars-primary-color));
 $violet-palette: map.set(mat.$violet-palette, 40, var(--dsVars-tertiary-color));
-
-html,
-body {
-  height: 100%;
-}
 
 html {
   @include mat.theme(

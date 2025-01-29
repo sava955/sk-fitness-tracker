@@ -1,0 +1,21 @@
+:host {
+  .ft-16 {
+    font-size: 16px;
+  }
+
+  .days-wrapper {
+    background-color: var(--dsVars-background-gray-color);
+    border-radius: 20px;
+  }
+
+  ::ng-deep {
+    .highlight-selected-days {
+      .mat-calendar-body-cell-content {
+        background-color: var(--dsVars-primary-color);
+        border-radius: 50%;
+        outline: none !important;
+        color: var(--dsVars-white) !important;
+      }
+    }
+  }
+}

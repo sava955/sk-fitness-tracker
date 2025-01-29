@@ -21,7 +21,9 @@ import { Exercise, ExerciseParams } from './shared/exercise.interface';
 import { DsInfiniteScrollDirective } from '../../core/ds-infinite-scroll.directive';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Activity } from './shared/activity.interface';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { DialogComponent } from '../../shared/components/dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-exercises',
@@ -36,6 +38,8 @@ import { Activity } from './shared/activity.interface';
     ReactiveFormsModule,
     DsInfiniteScrollDirective,
     MatProgressSpinnerModule,
+    RouterLink,
+    RouterOutlet
   ],
   templateUrl: './exercises.component.html',
   styleUrl: './exercises.component.scss',
@@ -48,17 +52,12 @@ export class ExercisesComponent implements OnInit {
   loading$ = new BehaviorSubject<boolean>(false);
   loadingMore = false;
 
-  activities!: Activity[];
-
-  met!: number;
-  weight!: number; // kg
-  duration!: number; // hours
-
-  caloriesBurned = this.met * this.weight * this.duration;
   searchControl = new FormControl<string>('');
 
   readonly destroyRef = inject(DestroyRef);
   readonly exerciseService = inject(ExerciseService);
+
+  readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.resetParams();
@@ -87,12 +86,7 @@ export class ExercisesComponent implements OnInit {
     extraParams: Partial<ExerciseParams> = {}
   ): Observable<Exercise[]> {
     this.setParams(extraParams);
-    return this.exerciseService.getExercises(this.params).pipe(
-      catchError((error) => {
-        console.error('Failed to load exercises', error);
-        return of([]);
-      })
-    );
+    return this.exerciseService.getExercises(this.params);
   }
 
   searchExercises(): void {
@@ -105,6 +99,15 @@ export class ExercisesComponent implements OnInit {
         tap(() => this.setLoading(true)),
         switchMap((value) => {
           return this.getExercises({ specific_activities_like: value! }).pipe(
+            catchError((error) => {
+              console.error('Failed to load exercises', error);
+              const errorData = {
+                title: 'Error',
+                message: 'Failed to load exercises'
+              }
+              this.openDialog(errorData);
+              return of([]);
+            }),
             finalize(() => this.setLoading(false))
           );
         })
@@ -132,4 +135,14 @@ export class ExercisesComponent implements OnInit {
         this.exercises = [...this.exercises, ...res];
       });
   }
+
+  openDialog(data: any): void {
+    this.dialog.open(DialogComponent, {
+      data: {
+       ...data
+      },
+      width: '300px',
+    });
+  }
+
 }

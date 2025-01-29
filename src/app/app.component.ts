@@ -30,7 +30,6 @@ export class AppComponent implements AfterViewInit {
     this.drawerContent.elementScrolled().pipe(
       map(() => this.drawerContent.measureScrollOffset('bottom')),
     ).subscribe((res) => {
-      console.log(res);
      this.drawerContentScrollService.scrollOffset.set(res);
     })
   }
