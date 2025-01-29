@@ -343,5 +343,18 @@
       "major_heading": "conditioning",
       "specific_activities": "exercise rowing, stationary, general, moderate effort"
     }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Doe",
+      "dateOfBirth": "27.11.1995",
+      "gender": "male",
+      "email": "john.doe@gmail.com",
+      "password": "test",
+      "exercises": [],
+      "nutrition": []
+    }
   ]
 }

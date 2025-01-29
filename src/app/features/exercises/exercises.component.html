@@ -34,7 +34,7 @@
             <span>{{ exercise.specific_activities }}</span>
           </mat-card-content>
           <mat-card-footer class="card-footer flex justify-content-end">
-            <button class="accent btn-sm" mat-flat-button>Add exercise</button>
+            <a routerLink="add-exercise/{{exercise.id}}" class="accent btn-sm" mat-flat-button>Add exercise</a>
           </mat-card-footer>
         </mat-card>
       </article>
@@ -48,3 +48,5 @@
     }
   }
 </section>
+
+<router-outlet>
