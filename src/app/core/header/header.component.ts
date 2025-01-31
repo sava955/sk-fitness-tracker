@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar'; 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDrawerMode } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-header',
@@ -10,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
+  @Input() sideNavMode!: MatDrawerMode;
   @Output() sidebarToggled = new EventEmitter();
 
   toggleSidebar(): void {

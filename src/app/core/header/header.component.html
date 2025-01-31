@@ -1,4 +1,5 @@
 <mat-toolbar>
+  @if (sideNavMode === 'over') {
   <button
     mat-icon-button
     class="example-icon"
@@ -7,6 +8,7 @@
   >
     <mat-icon>menu</mat-icon>
   </button>
+  }
   <span>Devsofteon Fitness Tracker</span>
   <span class="example-spacer"></span>
   <button

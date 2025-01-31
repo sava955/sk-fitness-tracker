@@ -45,36 +45,36 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrl: './exercises.component.scss',
 })
 export class ExercisesComponent implements OnInit {
-  params!: ExerciseParams;
-  _start = 0;
-  _limit = 18;
+  private params!: ExerciseParams;
+  private _start = 0;
+  private _limit = 18;
   exercises: Exercise[] = [];
   loading$ = new BehaviorSubject<boolean>(false);
   loadingMore = false;
 
   searchControl = new FormControl<string>('');
 
-  readonly destroyRef = inject(DestroyRef);
-  readonly exerciseService = inject(ExerciseService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly exerciseService = inject(ExerciseService);
 
-  readonly dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.resetParams();
     this.searchExercises();
   }
 
-  setLoading(state: boolean): void {
+  private setLoading(state: boolean): void {
     this.loading$.next(state);
   }
 
-  resetParams(): void {
+  private resetParams(): void {
     this._start = 0;
     this._limit = 18;
     this.setParams();
   }
 
-  setParams(extraParams: Partial<ExerciseParams> = {}): void {
+  private setParams(extraParams: Partial<ExerciseParams> = {}): void {
     this.params = {
       _start: this._start,
       _limit: this._limit,
@@ -82,14 +82,14 @@ export class ExercisesComponent implements OnInit {
     };
   }
 
-  getExercises(
+  private getExercises(
     extraParams: Partial<ExerciseParams> = {}
   ): Observable<Exercise[]> {
     this.setParams(extraParams);
     return this.exerciseService.getExercises(this.params);
   }
 
-  searchExercises(): void {
+  private searchExercises(): void {
     this.searchControl.valueChanges
       .pipe(
         takeUntilDestroyed(this.destroyRef),
@@ -136,7 +136,7 @@ export class ExercisesComponent implements OnInit {
       });
   }
 
-  openDialog(data: any): void {
+  private openDialog(data: any): void {
     this.dialog.open(DialogComponent, {
       data: {
        ...data
