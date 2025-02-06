@@ -1,1 +1,83 @@
-/* You can add global styles to this file, and also import other style files */
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+@use "sass:map";
+
+@use "./styles/layout.scss";
+
+@font-face {
+  font-family: "Venus rising";
+  src: url("./assets/fonts/Venus\ Rising\ Rg.otf");
+}
+
+:root {
+  --dsVars-primary-color: #f06b46;
+  --dsVars-tertiary-color: #8e58fb;
+  --dsVars-tertiary-color-light: #ffe6c6;
+  --dsVars-white: #ffffff;
+
+  --dsVars-primary-dark: #180f2a;
+
+  --dsVars-background-light-color: #f4f6f5;
+  --dsVars-background-gray-color: #efefef;
+  --dsVars-background-dark-color: #1b1b1b;
+
+  --dsVars-primary-light-color: #f8af8a;
+  --dsVars-mandatory-element: #fde5d4;
+
+  --dsVars-icon-inactive-color: #cbcbcb;
+}
+
+$orange-palette: map.set(mat.$orange-palette, 40, var(--dsVars-primary-color));
+$violet-palette: map.set(mat.$violet-palette, 40, var(--dsVars-tertiary-color));
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: $orange-palette,
+        tertiary: $violet-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.title {
+  font-family: "Venus rising", "Helvetica Neue", sans-serif;
+}
+
+.btn-sm {
+  @include mat.button-overrides(
+    (
+      filled-container-height: 30px
+    )
+  );
+}
+
+.title-underline {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 70%;
+    height: 5px;
+    left: 0;
+    bottom: 0;
+    background-color: var(--dsVars-primary-color);
+  }
+}
