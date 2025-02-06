@@ -1,19 +1,20 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Exercise, ExerciseGroup, ExerciseParams } from './exercise.interface';
+import { Exercise, ExerciseGroup, ExerciseParams } from '../../models/exercises/exercise.interface';
 import { environment } from '../../../../environments/environment.development';
+import { ResponseObj } from '../../../shared/models/http-response.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ExerciseService {
-  readonly url = environment.beUrl + '/exercises';
+  readonly url = environment.beUrl + '/api/exercises';
   readonly httpClient = inject(HttpClient);
 
-  getExercises(params: ExerciseParams): Observable<Exercise[]> {
+  getExercises(params: ExerciseParams): Observable<ResponseObj<Exercise[]>> {
     const httpParams = new HttpParams({fromObject: {...params}});
-    return this.httpClient.get<Exercise[]>(this.url, {params: httpParams});
+    return this.httpClient.get<ResponseObj<Exercise[]>>(this.url, {params: httpParams});
   }
 
   getExercise(id: string): Observable<Exercise> {

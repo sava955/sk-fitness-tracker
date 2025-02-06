@@ -13,7 +13,7 @@ import {
   MatDialogContent,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { Exercise, ExerciseGroup } from '../../shared/exercise.interface';
+import { Exercise, ExerciseGroup } from '../../../../core/models/exercises/exercise.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule, Location } from '@angular/common';
 import {
@@ -39,7 +39,7 @@ import {
   ExercisePlanner,
   ExerciseStatus,
   ScheduleRange,
-} from '../../shared/exercise-planer.enum';
+} from '../../../../core/enums/exercises/exercise-planer.enum';
 
 @Component({
   selector: 'app-add-exercise-form',

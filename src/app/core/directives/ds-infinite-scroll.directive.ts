@@ -1,5 +1,5 @@
 import { Directive, effect, EventEmitter, inject, Output } from '@angular/core';
-import { DrawerContentScrollService } from './drawer-content-scroll.service';
+import { DrawerContentScrollService } from '../services/drawer-content-scroll/drawer-content-scroll.service';
 
 @Directive({
   selector: '[appDsInfiniteScroll]'

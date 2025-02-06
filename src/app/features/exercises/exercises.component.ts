@@ -16,14 +16,16 @@ import {
 } from 'rxjs/operators';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ExerciseService } from './shared/exercise.service';
-import { Exercise, ExerciseParams } from './shared/exercise.interface';
-import { DsInfiniteScrollDirective } from '../../core/ds-infinite-scroll.directive';
+import { ExerciseService } from '../../core/services/exercises/exercise.service';
+import { Exercise, ExerciseParams } from '../../core/models/exercises/exercise.interface';
+import { DsInfiniteScrollDirective } from '../../core/directives/ds-infinite-scroll.directive';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ResponseObj } from '../../shared/models/http-response.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-exercises',
@@ -39,18 +41,17 @@ import { MatDialog } from '@angular/material/dialog';
     DsInfiniteScrollDirective,
     MatProgressSpinnerModule,
     RouterLink,
-    RouterOutlet
+    RouterOutlet,
   ],
   templateUrl: './exercises.component.html',
   styleUrl: './exercises.component.scss',
 })
 export class ExercisesComponent implements OnInit {
   private params!: ExerciseParams;
-  private _start = 0;
-  private _limit = 18;
+  private start!: number;
+  private limit!: number;
   exercises: Exercise[] = [];
   loading$ = new BehaviorSubject<boolean>(false);
-  loadingMore = false;
 
   searchControl = new FormControl<string>('');
 
@@ -58,6 +59,11 @@ export class ExercisesComponent implements OnInit {
   private readonly exerciseService = inject(ExerciseService);
 
   private readonly dialog = inject(MatDialog);
+
+  private message!: string;
+  private noMoreToLoad: boolean = false;
+
+  private readonly _snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
     this.resetParams();
@@ -69,22 +75,22 @@ export class ExercisesComponent implements OnInit {
   }
 
   private resetParams(): void {
-    this._start = 0;
-    this._limit = 18;
+    this.start = 0;
+    this.limit = 18;
     this.setParams();
   }
 
   private setParams(extraParams: Partial<ExerciseParams> = {}): void {
     this.params = {
-      _start: this._start,
-      _limit: this._limit,
+      start: this.start,
+      limit: this.limit,
       ...extraParams,
     };
   }
 
   private getExercises(
     extraParams: Partial<ExerciseParams> = {}
-  ): Observable<Exercise[]> {
+  ): Observable<ResponseObj<Exercise[]>> {
     this.setParams(extraParams);
     return this.exerciseService.getExercises(this.params);
   }
@@ -98,13 +104,15 @@ export class ExercisesComponent implements OnInit {
         distinctUntilChanged(),
         tap(() => this.setLoading(true)),
         switchMap((value) => {
-          return this.getExercises({ specific_activities_like: value! }).pipe(
+          this.resetParams();
+          this.noMoreToLoad = false;
+
+          return this.getExercises({ description: value! }).pipe(
             catchError((error) => {
-              console.error('Failed to load exercises', error);
               const errorData = {
                 title: 'Error',
-                message: 'Failed to load exercises'
-              }
+                message: 'Failed to load exercises',
+              };
               this.openDialog(errorData);
               return of([]);
             }),
@@ -112,37 +120,50 @@ export class ExercisesComponent implements OnInit {
           );
         })
       )
-      .subscribe((res) => {
-        this.exercises = res;
+      .subscribe((response: any) => {
+        if (response.data.length === 0) {
+          this.message = response.message;
+          this.noMoreToLoad = true;
+          this.openSnackBar(this.message);
+        }
+        this.exercises = response.data;
       });
   }
 
   loadMore(scrolled: boolean): void {
-    if (!scrolled) {
+    if (!scrolled || this.noMoreToLoad) {
       return;
     }
 
-    this.loadingMore = true;
-    this._start = this.exercises.length;
+    this.setLoading(true);
+    this.start = this.start + 1;
 
     this.setParams();
     this.getExercises()
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => (this.loadingMore = false))
+        finalize(() => this.setLoading(false))
       )
-      .subscribe((res) => {
-        this.exercises = [...this.exercises, ...res];
+      .subscribe((respnse) => {
+        if (respnse.data.length === 0) {
+          this.message = respnse.message;
+          this.noMoreToLoad = true;
+          this.openSnackBar(this.message);
+        }
+        this.exercises = [...this.exercises, ...respnse.data];
       });
   }
 
   private openDialog(data: any): void {
     this.dialog.open(DialogComponent, {
       data: {
-       ...data
+        ...data,
       },
       width: '300px',
     });
   }
 
+  private openSnackBar(message: string) {
+    this._snackBar.open(message, 'close');
+  }
 }

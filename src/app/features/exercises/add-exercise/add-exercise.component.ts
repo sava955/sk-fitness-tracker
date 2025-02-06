@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '
 import { MatDialog } from '@angular/material/dialog';
 import { AddExerciseFormComponent } from './add-exercise-form/add-exercise-form.component';
 import { ActivatedRoute } from '@angular/router';
-import { ExerciseService } from '../shared/exercise.service';
+import { ExerciseService } from '../../../core/services/exercises/exercise.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Exercise } from '../shared/exercise.interface';
+import { Exercise } from '../../../core/models/exercises/exercise.interface';
 
 @Component({
   selector: 'app-add-exercise',

@@ -17,9 +17,7 @@ import { SidebarComponent } from '../../core/sidebar/sidebar.component';
 import { HeaderComponent } from '../../core/header/header.component';
 import { RouterOutlet } from '@angular/router';
 import { map } from 'rxjs';
-import { DrawerContentScrollService } from '../../core/drawer-content-scroll.service';
-import { UserService } from '../../shared/services/user.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DrawerContentScrollService } from '../../core/services/drawer-content-scroll/drawer-content-scroll.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -46,18 +44,9 @@ export class MainLayoutComponent implements OnInit, AfterViewInit {
   private readonly drawerContentScrollService = inject(
     DrawerContentScrollService
   );
-  private readonly userService = inject(UserService);
-  private readonly destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.setSidenavMode();
-
-    this.userService
-      .getUser(1)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((res) => {
-        console.log(res);
-      });
   }
 
   ngAfterViewInit(): void {
