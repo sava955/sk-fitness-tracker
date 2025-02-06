@@ -67,3 +67,17 @@ h6,
     )
   );
 }
+
+.title-underline {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 70%;
+    height: 5px;
+    left: 0;
+    bottom: 0;
+    background-color: var(--dsVars-primary-color);
+  }
+}

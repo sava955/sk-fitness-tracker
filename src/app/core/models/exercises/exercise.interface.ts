@@ -8,15 +8,15 @@ export interface ExerciseGroup {
 }
 
 export interface Exercise {
-  id: number;
+  _id: string;
   code: string;
   mets: number;
-  major_heading: string;
-  specific_activities: string;
+  category: string;
+  description: string;
 }
 
 export interface ExerciseParams {
-  _start: number;
-  _limit: number;
-  specific_activities_like?: string;
+  start: number;
+  limit: number;
+  description?: string;
 }

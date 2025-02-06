@@ -1,10 +1,10 @@
-<mat-dialog-content>
+<mat-dialog-content class="dialog-content">
   <h2>
-    {{ exercise.major_heading }}
+    {{ exercise.category }}
   </h2>
 
   <div>
-    {{ exercise.specific_activities }}
+    {{ exercise.description }}
 
     <form [formGroup]="exerciseForm">
       <div class="mt-4">

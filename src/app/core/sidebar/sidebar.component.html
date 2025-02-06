@@ -1,5 +1,12 @@
 <nav class="side-nav">
-  <div class="logo"></div>
+  <div class="logo">
+    @if (sideNavMode === 'over') {
+      <button mat-button (click)="closeSidenav()">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+
+  </div>
   <mat-list role="list">
     <mat-list-item role="listitem" *ngFor="let item of navItems">
       <a mat-button class="nav-btn" [routerLink]="item.path" routerLinkActive="active-link">
